@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Digital Wellness Balance App</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Digital Wellness Balance App</h1>
+
+			<!-- Welcome Screen -->
+			<div id="welcomeScreen" class="screen">
+				<h2>Welcome to Your Wellness Balance</h2>
+				<button id="startButton">Start</button>
+			</div>
+
+			<!-- Self Monitoring Screen -->
+			<div id="selfMonitoringScreen" class="screen" style="display: none">
+				<h2>Track Your Activities</h2>
+				<label for="screenTime">Screen Time (hours):</label>
+				<input type="number" id="screenTime" min="0" max="24" />
+				<label for="exerciseTime">Exercise Time (hours):</label>
+				<input type="number" id="exerciseTime" min="0" max="24" />
+				<button id="submitActivities">Submit</button>
+			</div>
+
+			<!-- Goal Setting Screen -->
+			<div id="goalSettingScreen" class="screen" style="display: none">
+				<h2>Set Your Personalized Goals</h2>
+				<label for="screenGoal">Screen Time Goal (hours):</label>
+				<input type="number" id="screenGoal" min="0" max="24" />
+				<label for="exerciseGoal">Exercise Goal (hours):</label>
+				<input type="number" id="exerciseGoal" min="0" max="24" />
+				<button id="saveGoal">Save Goal</button>
+			</div>
+
+			<!-- Results Screen -->
+			<div id="resultsScreen" class="screen" style="display: none">
+				<h2>Results</h2>
+				<p id="feedback"></p>
+				<button id="restart">Restart</button>
+			</div>
+		</div>
+
+		<script src="/app.js"></script>
+	</body>
+</html>
