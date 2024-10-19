@@ -4,7 +4,33 @@ document.addEventListener('DOMContentLoaded', function () {
 	let screenGoal = 0;
 	let exerciseGoal = 0;
 
-	// Screen switching logic
+	const loadData = () => {
+		const data = JSON.parse(localStorage.getItem('activityData')) || [];
+		return data;
+	};
+
+	const saveData = (date, screenTime, exerciseTime) => {
+		const data = loadData();
+		data.push({ date, screenTime, exerciseTime });
+		localStorage.setItem('activityData', JSON.stringify(data));
+	};
+
+	const displayData = () => {
+		const data = loadData();
+		const resultsContainer = document.getElementById('previousData');
+		resultsContainer.innerHTML = ''; // Clear previous content
+
+		data.forEach((entry) => {
+			const entryDiv = document.createElement('div');
+			entryDiv.innerHTML = `
+				<strong>Date:</strong> ${entry.date} <br>
+				<strong>Screen Time:</strong> ${entry.screenTime} hours <br>
+				<strong>Exercise Time:</strong> ${entry.exerciseTime} hours <hr>
+			`;
+			resultsContainer.appendChild(entryDiv);
+		});
+	};
+
 	const showScreen = (screenId) => {
 		document.querySelectorAll('.screen').forEach((screen) => {
 			screen.style.display = 'none';
@@ -12,24 +38,22 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById(screenId).style.display = 'block';
 	};
 
-	// Show the welcome screen at the start
 	showScreen('welcomeScreen');
 
-	// Handle "Start" button click
 	document.getElementById('startButton').addEventListener('click', function () {
 		showScreen('selfMonitoringScreen');
 	});
 
-	// Handle activity submission
-	document
-		.getElementById('submitActivities')
-		.addEventListener('click', function () {
-			screenTime = Number(document.getElementById('screenTime').value);
-			exerciseTime = Number(document.getElementById('exerciseTime').value);
-			showScreen('goalSettingScreen');
-		});
+	document.getElementById('submitActivities').addEventListener('click', function () {
+		screenTime = Number(document.getElementById('screenTime').value);
+		exerciseTime = Number(document.getElementById('exerciseTime').value);
+		const today = new Date().toLocaleDateString();
 
-	// Handle goal saving
+		saveData(today, screenTime, exerciseTime);
+		displayData(); 
+		showScreen('goalSettingScreen');
+	});
+
 	document.getElementById('saveGoal').addEventListener('click', function () {
 		screenGoal = Number(document.getElementById('screenGoal').value);
 		exerciseGoal = Number(document.getElementById('exerciseGoal').value);
@@ -37,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		checkProgress();
 	});
 
-	// Check progress and display feedback
 	const checkProgress = () => {
 		let feedback = '';
 
@@ -56,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById('feedback').innerHTML = feedback;
 	};
 
-	// Restart the app
 	document.getElementById('restart').addEventListener('click', function () {
 		showScreen('welcomeScreen');
 	});
+
+	displayData();
 });
